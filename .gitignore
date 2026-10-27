@@ -3,3 +3,6 @@ __pycache__/
 .DS_Store
 .agents/
 .claude/
+
+# Runtime learner transcripts (existing tracked file requires separate review)
+student_logs.json

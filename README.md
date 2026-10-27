@@ -1,72 +1,38 @@
-# AI Classroom & Socratic Teaching Agent 👨‍🏫🎓
+# AI classroom teaching agent
 
-> **An autonomous Socratic AI tutoring and classroom telemetry system built with LangChain, Local Ollama (Llama 3), and Streamlit by Abhi Gurjar.**
+A local tutoring prototype that connects Streamlit and LangChain prompts to Ollama's `llama3` model. It demonstrates guided questioning and separate student and teacher views, reflecting my AI/ML training and mentorship work.
 
----
-
-## 💡 What Is This Project? (Explained Like a Human)
-
-When students use typical AI chatbots for homework, they usually copy-paste the problem and the AI immediately gives them the finished answer. The student gets an A on the homework, but when the real exam comes, they haven't learned anything because their brain never did the work.
-
-**This project implements a Socratic AI Teaching Agent.**
-- Instead of handing out raw answers, the agent acts like a master tutor: it breaks complex problems down, uses relatable real-world analogies, and asks guiding questions that encourage the student to discover the solution on their own.
-- **Dual-Portal Architecture**:
-  1. **Student Help Portal**: An encouraging, interactive interface where students can ask questions about Python, Math, Data Science, or Machine Learning at any time of day.
-  2. **Teacher Analytics Dashboard**: Gives educators real-time telemetry on student confusion hotspots, session durations, and comprehension milestones without violating student privacy.
-- **100% Local & Private**: Runs on-device via **Ollama (Llama 3)**, ensuring zero data leakage and zero recurring cloud API bills.
-
----
-
-## 🏛️ System Architecture
-
-```
-[ Student Portal (Streamlit) ] ──► [ LangChain Conversational Memory ]
-                                                 │
-                                                 ▼
-                                     [ Socratic Prompt Chain ]
-                                                 │
-                                                 ▼
-                                      [ Local Ollama Llama 3 ]
-                                                 │
-                                                 ▼
-[ Teacher Dashboard ] ◄────── [ Telemetry & Session Logger (JSON) ]
-```
-
----
-
-## 🚀 How to Run in 5 Seconds
+## Setup
 
 ```bash
-# 1. Clone the repository
 git clone https://github.com/abhigurjar101/ai-classroom-teaching-agent.git
 cd ai-classroom-teaching-agent
-
-# 2. Run CLI Tutoring Session
-python3 teaching_agent.py
-
-# 3. Or launch the full dual-portal Streamlit web app
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+ollama pull llama3
+# Keep Ollama running in a separate terminal if the desktop service is not running:
+# ollama serve
 streamlit run classroom_app.py
 ```
 
----
+Install Ollama separately before pulling the model. Model downloads require network access, disk space, and suitable hardware. For a terminal session, run `python teaching_agent.py`. `app.py` is an alternate single-page UI.
 
-## 📁 Repository Structure
+## Demonstration flow
 
-```
-ai-classroom-teaching-agent/
-├── classroom_app.py    # Streamlit dual-portal web app (Student Portal + Teacher Dashboard)
-├── teaching_agent.py   # CLI Socratic tutoring session with LangChain memory
-├── app.py              # Single-page tutor launcher
-├── student_logs.json   # Session telemetry and comprehension logs
-├── requirements.txt    # LangChain, Ollama, Streamlit dependencies
-└── README.md           # You are here! Simple human documentation
-```
+Use a fictional learner name, ask a Python or ML question, then open the teacher view to inspect the saved conversation and ask for teaching advice. The prompt asks the model to guide learning; it cannot guarantee that the model will withhold answers or teach correctly.
 
----
+## Data and limitations
 
-## 👤 Author
+`classroom_app.py` writes learner names, timestamps, and full messages to `student_logs.json`. The teacher view has no authentication or role-based authorization. Local JSON writes do not support concurrent classroom sessions safely. This is a local demonstration, not a privacy-preserving production classroom system. Use synthetic conversations and add authorization, consent, retention controls, and session isolation before using real learner data.
 
-**Abhi Gurjar**  
-- Portfolio: [abhigurjar.vercel.app](https://abhigurjar.vercel.app)  
-- GitHub: [@abhigurjar101](https://github.com/abhigurjar101)  
-- LinkedIn: [Abhi Gurjar](https://in.linkedin.com/in/abhi-gurjar-b13067203)
+The dashboard displays conversation history and model-generated advice. It does not calculate validated comprehension milestones or learning outcomes. No educational-effectiveness result is claimed.
+
+## Repository map
+
+- `teaching_agent.py`: CLI with conversation history
+- `classroom_app.py`: student chat, JSON logs, teacher advice
+- `app.py`: alternate tutor UI
+- `requirements.txt`: application dependencies
+
+[Abhi Kumar Gurjar](https://www.linkedin.com/in/abhigurjar)
